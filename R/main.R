@@ -14,8 +14,7 @@ main <- function() {
 		       purrr,
 		       quanteda
 		       )
-
-    source(system.file("app", "ui.R", package = "inzightta"))
-    source(system.file("app", "server.R", package = "inzightta"))
-    shiny::runApp(shiny::shinyApp(ui, server))
+	source(system.file("app", "ui.R", package = "inzightta"))
+	source(system.file("app", "server.R", package = "inzightta"))
+	shiny::runApp(shiny::shinyApp(ui, server))
 }

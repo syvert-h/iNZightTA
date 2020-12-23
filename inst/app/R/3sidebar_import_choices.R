@@ -246,10 +246,11 @@ output$side <- renderUI({
 gut <- copy(gutenbergr::gutenberg_metadata)
 gut <- data.table::setDT(gut)
 gut <- gut[language == "en" & gutenberg_id != 0 & has_text]
-gut <- gut[,choice := gsub("\\n|\\r", "", 
+gut <- gut[,choice := gsub("\\n|\\r", "",
                            ifelse(!is.na(author),
                                   paste(title, author, sep = " :by: "),
                                   title))]
 choices <- gut[,choice]
 
 updateSelectizeInput(session, "gutenberg_work", choices = choices, server = TRUE)
+###########################################################
