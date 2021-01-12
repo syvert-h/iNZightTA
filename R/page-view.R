@@ -19,19 +19,17 @@
 #'
 #' @export
 struct_pageview <- function(.data, col_name, num_terms, term_index, word_size, palette){
-    
     end <- min(nrow(.data), term_index + num_terms)
     q_col_name <- dplyr::enquo(col_name)
     
+    env <- environment()
     if (rlang::as_label(q_col_name) %in% c("Term Sentiment", "Moving Average Term Sentiment", 
                         "Aggregated Sentiment")){
         # if afinn, bing, nrc, loughran (some numeric scale)
         if (sum(grepl("[[:digit:]]",.data[,rlang::as_label(q_col_name)])) > 0) {
-            
             limit <- max(abs(.data[,rlang::as_label(q_col_name)]), na.rm = TRUE) * c(-1, 1) # limits for color palette
-            
-            .data[seq(term_index, end),] %>%
-                dplyr::pull(word) %>%
+            "word" %>%
+                assign(dplyr::pull(.data = .data[seq(term_index, end),], var = word), envir = env) %>%
                 ggpage::ggpage_build() %>%
                 dplyr::arrange(page, line) %>%
                 dplyr::bind_cols(.data[seq(term_index, end),]) %>% 
@@ -44,8 +42,8 @@ struct_pageview <- function(.data, col_name, num_terms, term_index, word_size, p
         }
         # if nrc all senti, loughran all senti
         else {
-            .data[seq(term_index, end),] %>%
-                dplyr::pull(word) %>%
+            "word" %>% 
+                assign(dplyr::pull(.data = .data[seq(term_index, end),], var = word), envir = env) %>%
                 ggpage::ggpage_build() %>%
                 dplyr::arrange(page, line) %>%
                 dplyr::bind_cols(.data[seq(term_index, end),]) %>% 
@@ -60,8 +58,8 @@ struct_pageview <- function(.data, col_name, num_terms, term_index, word_size, p
     }
     else{
         limit <- c(0, max(.data[,rlang::as_label(q_col_name)], na.rm = TRUE)) # limits for color palette
-        .data[seq(term_index, end),] %>%
-            dplyr::pull(word) %>%
+        "word" %>%
+            assign(dplyr::pull(.data = .data[seq(term_index, end),], var = word), envir = env) %>%
             ggpage::ggpage_build() %>%
             dplyr::arrange(page, line) %>%
             dplyr::bind_cols(.data[seq(term_index, end),]) %>% 
