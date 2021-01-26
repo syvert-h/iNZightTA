@@ -7,7 +7,7 @@ ui <- navbarPage("iNZight Text Analytics",
                           sidebarLayout(
                             sidebarPanel(
                               shinyjs::useShinyjs(),
-                              selectizeInput("import_from", "Retrieve text from", choices = text_sources),
+                              selectInput("import_from", "Retrieve text from", choices = text_sources, selectize = FALSE),
                               
                               conditionalPanel(
                                 condition = "input.import_from == 'Project Gutenberg'",
@@ -41,7 +41,7 @@ ui <- navbarPage("iNZight Text Analytics",
                               conditionalPanel(
                                 condition = "input.import_from == 'Project Gutenberg'||input.import_from == 'Upload .txt, .csv, .xlsx, or .xls file'", 
                                 selectInput("section_by", "Section By",
-                                          list("", "chapter", "part", "section", "canto", "book"))
+                                          list("", "chapter", "part", "section", "canto", "book"), selectize = F)
                               ),
                               
                               uiOutput("vars_to_filter"),
@@ -84,7 +84,7 @@ ui <- navbarPage("iNZight Text Analytics",
                                                        "Moving Average Term Sentiment",
                                                        "Aggregated Term Count",
                                                        "Key Sections",
-                                                       "Aggregated Sentiment")),
+                                                       "Aggregated Sentiment"), selectize = F),
                                          
                                          #####
                                          conditionalPanel(
@@ -101,8 +101,8 @@ ui <- navbarPage("iNZight Text Analytics",
                                            
                                            conditionalPanel(
                                              condition = "input.what_vis == 'Word Tree'", 
-                                             selectizeInput("merge_id_grps_wt", "Group data by", choices = character(0)),
-                                             selectizeInput("filter_wt", "View only for", choices = character(0)), 
+                                             selectInput("merge_id_grps_wt", "Group data by", choices = character(0), selectize = F),
+                                             selectInput("filter_wt", "View only for", choices = character(0), selectize = F), 
                                              actionButton("create_tree", "Create Tree")
                                              ), 
                                            
@@ -152,13 +152,13 @@ ui <- navbarPage("iNZight Text Analytics",
                                                      selectInput("disp_valuetype",
                                                                  "Type of Pattern Matching",
                                                                  list("glob", "regex",
-                                                                      "fixed")),
+                                                                      "fixed"), selectize = F),
                                                      uiOutput("quant"), 
                                                     
                                                      selectInput("scale",
                                                                  "Scale",
                                                                  list("absolute",
-                                                                      "relative")),
+                                                                      "relative"), selectize = F),
                                                      
                                                      numericInput("window", "Window", value = 5, min = 1, max = 10),
                                                      
@@ -168,7 +168,7 @@ ui <- navbarPage("iNZight Text Analytics",
                                                                  min = 400, max = 2000,
                                                                  value = 1000),
                                                      selectInput("merge_id_grps", "Group text by", 
-                                                                 choices = NULL, selected = "id"), 
+                                                                 choices = NULL, selected = "id", selectize = F), 
                                                      actionButton("create_kwic", "Create lexical dispersion plot"),
                                                      tags$hr(),
                                                      

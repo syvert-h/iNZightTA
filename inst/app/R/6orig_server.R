@@ -121,22 +121,22 @@ output$table <- renderTable({
   filtered() %>% utils::head(300)})
 
 output$sw_lexicon <- renderUI(selectInput("sw_lexicon", "Select the Stopword Lexicon",
-                                          stopwords::stopwords_getsources()))
+                                          stopwords::stopwords_getsources(), selectize = F))
 output$vars_to_filter <- renderUI(selectInput("filter_var",
                                               "select which column to apply filtering to",
-                                              c("", names(sectioned())) %||% c("")))
+                                              c("", names(sectioned())) %||% c(""), selectize = F))
 
 output$group_by <- renderUI({
                             input$what_vis
                             if (input$what_vis == "Term Frequency-Inverse Document Frequency"){
                               selectInput("group_var",
                                           "select which columns to group on (grouping is combined with faceting)",
-                                          c("", names(filtered())) %||% c(""))
+                                          c("", names(filtered())) %||% c(""), selectize = F)
                             }
                             else {
                               selectInput("group_var",
                                           "select which columns to group on",
-                                          c("", names(filtered())) %||% c(""))
+                                          c("", names(filtered())) %||% c(""), selectize = F)
                             }
 })
 
@@ -149,7 +149,7 @@ output$insight_options <- renderUI({
                                              "Page View",
                                              "Time Series",
                                              "Density",
-                                             "Histogram")),
+                                             "Histogram"), selectize = F),
          "Term Frequency-Inverse Document Frequency" = selectInput("vis_type",
                                                                    "Select how to Visualise it",
                                                                    list("Bar",
@@ -157,7 +157,7 @@ output$insight_options <- renderUI({
                                                                         "Page View",
                                                                         "Time Series",
                                                                         "Density",
-                                                                        "Histogram")),
+                                                                        "Histogram"), selectize = F),
          "n-gram Frequency" = tagList(selectInput("vis_type",
                                                   "Select how to Visualise it",
                                                   list("Bar",
@@ -165,7 +165,7 @@ output$insight_options <- renderUI({
                                                        "Page View",
                                                        "Time Series",
                                                        "Density",
-                                                       "Histogram")),
+                                                       "Histogram"), selectize = F),
                                       sliderInput("n_gram",
                                                   "n-gram count",
                                                   2, 8, 2)),
@@ -176,12 +176,12 @@ output$insight_options <- renderUI({
                                                 "Page View",
                                                 "Time Series",
                                                 "Density",
-                                                "Histogram")),
+                                                "Histogram"), selectize = F),
                                selectInput("summ_method",
                                            "Method of summary generation",
                                            list("TextRank")
                                            #list("TextRank", "LexRank")
-                                           )),
+                                           ), selectize = F),
          ##########################
          
          "Word Tree" = tagList(
@@ -189,9 +189,9 @@ output$insight_options <- renderUI({
              inputId = "firstword",
              label = "Input the root word."),
            
-           selectizeInput("tree_type", "Tree Type",
+           selectInput("tree_type", "Tree Type",
                           c("suffix", "prefix", "double"),
-                          selected = "suffix")
+                          selected = "suffix", selectize = F)
          ),
 
          ##########################
@@ -202,7 +202,7 @@ output$insight_options <- renderUI({
                                                      "Time Series",
                                                      "Bar",
                                                      "Density",
-                                                     "Histogram"))#,
+                                                     "Histogram"), selectize = F)#,
                                     # selectInput("sent_lex",
                                     #             "Lexicon for Sentiment Dictionary",
                                     #             list("afinn", "bing",
@@ -216,7 +216,7 @@ output$insight_options <- renderUI({
                                                                     "Page View",
                                                                     "Bar",
                                                                     "Density",
-                                                                    "Histogram")),
+                                                                    "Histogram"), selectize = F),
                                                    sliderInput("term_sent_lag",
                                                                "Lag Length for Calculation of Moving Average",
                                                                3,10000,250) #,
@@ -232,10 +232,10 @@ output$insight_options <- renderUI({
                                                             "Page View",
                                                             "Time Series",
                                                             "Density",
-                                                            "Histogram")),
+                                                            "Histogram"), selectize = F),
                                            selectInput("agg_var",
                                                        "Select which variable to aggregate on",
-                                                       c("", names(grouped())) %||% c(""))),
+                                                       c("", names(grouped())) %||% c(""), selectize = F)),
          "Key Sections" = tagList(selectInput("vis_type",
                                               "Select how to Visualise it",
                                               list("Bar",
@@ -243,15 +243,15 @@ output$insight_options <- renderUI({
                                                    "Page View",
                                                    "Time Series",
                                                    "Density",
-                                                   "Histogram")),
+                                                   "Histogram"), selectize = F),
                                   selectInput("summ_method",
                                               "Method of summary generation",
-                                              list("LexRank")
+                                              list("LexRank"),
                                               #list("TextRank", "LexRank")
-                                              ),
+                                              selectize = F),
                                   selectInput("agg_var",
                                               "Select which variable to aggregate on",
-                                              c("", names(grouped())) %||% c(""))),
+                                              c("", names(grouped())) %||% c(""), selectize = F)),
          "Aggregated Sentiment" = tagList(selectInput("vis_type",
                                                       "Select how to Visualise it",
                                                       list("Page View",
@@ -259,14 +259,15 @@ output$insight_options <- renderUI({
                                                            "Time Series",
                                                            "Bar",
                                                            "Density",
-                                                           "Histogram")),
+                                                           "Histogram"), selectize = F),
                                           # selectInput("sent_lex",
                                           #             "Lexicon for Sentiment Dictionary",
                                           #             list("afinn", "bing",
                                           #                  "loughran", "nrc")),
                                           selectInput("agg_var",
                                                       "Select which variable to aggregate on",
-                                                      c("", names(grouped())) %||% c(""))))})
+                                                      c("", names(grouped())) %||% c(""), selectize = F)),
+         )})
 
 
 ################
@@ -276,14 +277,14 @@ output$senti_choices <- renderUI({
                 "Lexicon for Sentiment Dictionary",
                 list("afinn", "bing",
                      "loughran", "nrc",
-                     "nrc - emotions", "loughran - emotions"))
+                     "nrc - emotions", "loughran - emotions"), selectize = F)
   }
   else {
     if(input$what_vis %in% c("Term Sentiment", "Moving Average Term Sentiment", "Aggregated Sentiment"))
       selectInput("sent_lex",
                   "Lexicon for Sentiment Dictionary",
                   list("afinn", "bing",
-                       "loughran", "nrc"))
+                       "loughran", "nrc"), selectize = F)
   }
 })
 
@@ -293,13 +294,13 @@ output$senti_choices2 <- renderUI({
       selectInput("spec_senti",
                   "Highlight words with a sentiment of",
                   list("anger", "anticipation", "disgust", "fear", 
-                       "joy", "sadness", "surprise", "trust"))
+                       "joy", "sadness", "surprise", "trust"), selectize = F)
     }
     else if (input$sent_lex == "loughran - emotions"){
       selectInput("spec_senti",
                   "Highlight words with a sentiment of",
                   list("litigious", "uncertainty", 
-                       "constraining","superfluous"))
+                       "constraining","superfluous"), selectize = F)
     }
   }
 })
@@ -365,7 +366,7 @@ output$vis_options <- renderUI({
                                                  "triangle-forward",
                                                  "triangle-upright",
                                                  "pentagon",
-                                                 "star"))),
+                                                 "star"), selectize = F)),
          "Page View" = switch(input$what_vis,
                                 "Aggregated Term Count" =,
                                 "Key Sections" =,
@@ -377,7 +378,7 @@ output$vis_options <- renderUI({
                                            1, nrow(insighted_agg()), 1),
                                selectInput("palette",
                                            "Select the colour palette type",
-                                           list("Sequential", "Diverging"))),
+                                           list("Sequential", "Diverging"), selectize = F)),
                               
                               tagList(sliderInput("num_terms",
                                                   "Select the number of terms to visualise",
@@ -387,7 +388,7 @@ output$vis_options <- renderUI({
                                                   1, nrow(insighted()), 1),
                                       selectInput("palette",
                                                   "Select the colour palette type",
-                                                  list("Sequential", "Diverging")))), 
+                                                  list("Sequential", "Diverging"), selectize = F))), 
          
          "Bar" = tagList(sliderInput("num_terms", "Select the number of terms to visualise",
                                      2,50,5),
@@ -398,13 +399,13 @@ output$vis_facet_by <- renderUI({input$what_vis
                                 if (input$what_vis == "Term Frequency-Inverse Document Frequency"){
                                     tagList(selectInput("vis_facet",
                                                     "select which variable to facet on (Faceting plot by more than 50 levels may take a few minutes.)",
-                                                    c("", names(grouped())) %||% c(""), selected = input$group_var), 
+                                                    c("", names(grouped())) %||% c(""), selected = input$group_var, selectize = F), 
                                         checkboxInput("scale_fixed", "Scale Fixed", value=FALSE))
                                 }
                       else{
                         tagList(selectInput("vis_facet",
                                             "select which variable to facet on (Faceting plot by more than 50 levels may take a few minutes.)",
-                                            c("", names(grouped())) %||% c(""), selected = NULL),
+                                            c("", names(grouped())) %||% c(""), selected = NULL, selectize = F),
                                 checkboxInput("scale_fixed", "Scale Fixed", value=FALSE))
                       }
   })
