@@ -169,6 +169,15 @@ output$insight_options <- renderUI({
                                       sliderInput("n_gram",
                                                   "n-gram count",
                                                   2, 8, 2)),
+         ##-------------------------------------------------------------------
+         "Syllable Frequency" = selectInput("vis_type",
+                                            "Select how to Visualise it",
+                                            list("Bar",
+                                                 # "Time Series",
+                                                 # "Density",
+                                                 # "Histogram",
+                                                 "Stem Plot"), selectize = F),
+         ##-------------------------------------------------------------------
          "Key Words" = tagList(selectInput("vis_type",
                                            "Select how to Visualise it",
                                            list("Bar",
@@ -309,6 +318,10 @@ insighted <- reactive({
   switch(input$what_vis,
          "Term Frequency" = get_term_insight(grouped(),
                                              input$what_vis),
+         ##------------------------------------------------------
+         "Syllable Frequency" = get_term_insight(grouped(), 
+                                                 input$what_vis),
+         ##------------------------------------------------------
          "n-gram Frequency" = get_term_insight(grouped(),
                                                c("n-grams", "n-gram Frequency"),
                                                input$n_gram),
@@ -392,7 +405,13 @@ output$vis_options <- renderUI({
          
          "Bar" = tagList(sliderInput("num_terms", "Select the number of terms to visualise",
                                      2,50,5),
-                         checkboxInput("desc", "Sort descending")))})
+                         checkboxInput("desc", "Sort descending")),
+         ##---------------------------------------------------------------------------------
+         "Stem Plot" = tagList(
+           sliderInput("num_stem_plots", "Select which term(s) to visualise", 1, 50, c(1,4))
+           )
+         ##-----------------------------------------------   -------------------------------      
+         )})
 
 
 output$vis_facet_by <- renderUI({input$what_vis
@@ -478,6 +497,18 @@ visualisation <- reactive({
                                                          input$vis_facet,
                                                          input$scale_fixed, 
                                                          ncol = input$n_col_facet)),
+         ##---------------------------------------------------------------------------------------
+         "Stem Plot" = switch(input$what_vis,
+                              "Syllable Frequency" = get_vis(insighted(),
+                                                         input$vis_type,
+                                                         input$what_vis,
+                                                         input$vis_facet,
+                                                         input$scale_fixed,
+                                                         input$num_terms, #ncol
+                                                         input$num_stem_plots #number of stemplots
+                                                         )
+                              ),
+         ##---------------------------------------------------------------------------------------
          "Bar" = switch(input$what_vis,
                         "n-gram Frequency" = get_vis(insighted(),
                                                      input$vis_type,

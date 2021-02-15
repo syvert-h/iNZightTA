@@ -15,7 +15,11 @@ get_term_insight <- function(.data, operations, ...){
                      "n-grams" = get_ngram,
                      "Key Words" = keywords_tr,
                      "Term Sentiment" = term_sentiment,
-                     "Moving Average Term Sentiment" = ma_term_sentiment)
+                     "Moving Average Term Sentiment" = ma_term_sentiment ,
+                     ##-------------------------------------
+                     "Syllable Frequency" = get_text_as_syllable
+                     ##-------------------------------------
+                     )
     ops <- opstable[operations]
     lapply(seq(length(ops)),
            function(x){

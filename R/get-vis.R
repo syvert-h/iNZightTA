@@ -23,7 +23,11 @@ get_vis <- function(.data, vis, col, facet_by="", scale_fixed = TRUE, ncol = 3, 
                      "Bar" = score_barplot,
                      "Density" = dist_density,
                      "Histogram" = dist_hist,
-                     "Word Cloud" = score_wordcloud)
+                     "Word Cloud" = score_wordcloud,
+                     ##--------------------------------
+                     "Stem Plot" = struct_syll_stemplot
+                     ##--------------------------------
+                     )
     y <- dplyr::sym(col)
     chart <- vistable[[vis]](.data, !! y, ...)
     if (shiny::isTruthy(facet_by)){

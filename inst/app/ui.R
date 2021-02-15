@@ -84,7 +84,11 @@ ui <- navbarPage("iNZight Text Analytics",
                                                        "Moving Average Term Sentiment",
                                                        "Aggregated Term Count",
                                                        "Key Sections",
-                                                       "Aggregated Sentiment"), selectize = F),
+                                                       "Aggregated Sentiment",
+                                                       ##------------------
+                                                       "Syllable Frequency"
+                                                       ##------------------
+                                                       ), selectize = F),
                                          
                                          #####
                                          conditionalPanel(
