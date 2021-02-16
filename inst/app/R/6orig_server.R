@@ -170,12 +170,9 @@ output$insight_options <- renderUI({
                                                   "n-gram count",
                                                   2, 8, 2)),
          ##-------------------------------------------------------------------
-         "Syllable Frequency" = selectInput("vis_type",
+         "Syllables" = selectInput("vis_type",
                                             "Select how to Visualise it",
-                                            list("Bar",
-                                                 # "Time Series",
-                                                 # "Density",
-                                                 # "Histogram",
+                                            list("Syllable Barplot",
                                                  "Stem Plot"), selectize = F),
          ##-------------------------------------------------------------------
          "Key Words" = tagList(selectInput("vis_type",
@@ -319,7 +316,7 @@ insighted <- reactive({
          "Term Frequency" = get_term_insight(grouped(),
                                              input$what_vis),
          ##------------------------------------------------------
-         "Syllable Frequency" = get_term_insight(grouped(), 
+         "Syllables" = get_term_insight(grouped(), 
                                                  input$what_vis),
          ##------------------------------------------------------
          "n-gram Frequency" = get_term_insight(grouped(),
@@ -409,8 +406,12 @@ output$vis_options <- renderUI({
          ##---------------------------------------------------------------------------------
          "Stem Plot" = tagList(
            sliderInput("num_stem_plots", "Select which term(s) to visualise", 1, 50, c(1,4))
-           )
-         ##-----------------------------------------------   -------------------------------      
+           ),
+         
+         "Syllable Barplot" = tagList(
+           sliderInput("num_syllables", "Select the number of syllables to visualise",
+                                                  2, 50, 5))
+         ##---------------------------------------------------------------------------------     
          )})
 
 
@@ -499,15 +500,25 @@ visualisation <- reactive({
                                                          ncol = input$n_col_facet)),
          ##---------------------------------------------------------------------------------------
          "Stem Plot" = switch(input$what_vis,
-                              "Syllable Frequency" = get_vis(insighted(),
+                              "Syllables" = get_vis(insighted(),
                                                          input$vis_type,
                                                          input$what_vis,
                                                          input$vis_facet,
                                                          input$scale_fixed,
-                                                         input$num_terms, #ncol
-                                                         input$num_stem_plots #number of stemplots
+                                                         input$num_terms,
+                                                         input$num_stem_plots
                                                          )
                               ),
+         "Syllable Barplot" = switch(input$what_vis,
+                                     "Syllables" = get_vis(insighted(),
+                                                           input$vis_type,
+                                                           input$what_vis,
+                                                           input$vis_facet,
+                                                           input$scale_fixed,
+                                                           ncol = input$n_col_facet,
+                                                           input$num_syllables
+                                                           )
+                                     ),
          ##---------------------------------------------------------------------------------------
          "Bar" = switch(input$what_vis,
                         "n-gram Frequency" = get_vis(insighted(),
@@ -531,7 +542,8 @@ visualisation <- reactive({
                                                          desc = input$desc, 
                                                          ncol = input$n_col_facet),
                         
-                        get_vis(insighted(), input$vis_type,
+                        get_vis(insighted(), 
+                                input$vis_type,
                                 input$what_vis,
                                 facet_by = input$vis_facet,
                                 input$scale_fixed,

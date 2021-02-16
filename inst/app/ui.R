@@ -85,9 +85,9 @@ ui <- navbarPage("iNZight Text Analytics",
                                                        "Aggregated Term Count",
                                                        "Key Sections",
                                                        "Aggregated Sentiment",
-                                                       ##------------------
-                                                       "Syllable Frequency"
-                                                       ##------------------
+                                                       ##---------
+                                                       "Syllables"
+                                                       ##---------
                                                        ), selectize = F),
                                          
                                          #####

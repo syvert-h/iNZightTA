@@ -24,9 +24,10 @@ get_vis <- function(.data, vis, col, facet_by="", scale_fixed = TRUE, ncol = 3, 
                      "Density" = dist_density,
                      "Histogram" = dist_hist,
                      "Word Cloud" = score_wordcloud,
-                     ##--------------------------------
-                     "Stem Plot" = struct_syll_stemplot
-                     ##--------------------------------
+                     ##--------------------------------------
+                     "Stem Plot" = struct_syll_stemplot,
+                     "Syllable Barplot" = struct_syll_barplot
+                     ##--------------------------------------
                      )
     y <- dplyr::sym(col)
     chart <- vistable[[vis]](.data, !! y, ...)
