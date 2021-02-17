@@ -9,7 +9,7 @@ struct_syll_barplot <- function(.data, syll_col, num_syllables) {
     text_as_syll <- dplyr::pull(.data = .data, rlang::as_label(q_syll_col))
     allSyllables <- get_all_syllables_df(text_as_syll)
 
-    ggplot2::ggplot(data = allSyllables[1:num_syllables,], aes(x = reorder(all_syllables, -Freq), y = Freq)) +
+    ggplot2::ggplot(data = allSyllables[1:num_syllables,], aes(x = reorder(all_syllables, Freq), y = Freq)) +
       ggplot2::geom_bar(stat = "identity") +
       ggplot2::labs(y = "Frequency", x = "Syllables") +
       ggplot2::coord_flip()

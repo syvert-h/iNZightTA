@@ -405,7 +405,9 @@ output$vis_options <- renderUI({
                          checkboxInput("desc", "Sort descending")),
          ##---------------------------------------------------------------------------------
          "Stem Plot" = tagList(
-           sliderInput("num_stem_plots", "Select which term(s) to visualise", 1, 50, c(1,4))
+           sliderInput("num_stem_plots", "Select which term(s) to visualise", 1, 50, c(1,4)),
+           sliderInput("num_syll_occurrences", "Select the maximum number of rows for each plot", 1, 50, 10),
+           checkboxInput("black_stemplots", "Colour stem plots black?", F)
            ),
          
          "Syllable Barplot" = tagList(
@@ -501,13 +503,15 @@ visualisation <- reactive({
          ##---------------------------------------------------------------------------------------
          "Stem Plot" = switch(input$what_vis,
                               "Syllables" = get_vis(insighted(),
-                                                         input$vis_type,
-                                                         input$what_vis,
-                                                         input$vis_facet,
-                                                         input$scale_fixed,
-                                                         input$num_terms,
-                                                         input$num_stem_plots
-                                                         )
+                                                    input$vis_type,
+                                                    input$what_vis,
+                                                    input$vis_facet,
+                                                    input$scale_fixed,
+                                                    input$num_terms,
+                                                    input$num_stem_plots,
+                                                    input$num_syll_occurrences,
+                                                    input$black_stemplots
+                                                    )
                               ),
          "Syllable Barplot" = switch(input$what_vis,
                                      "Syllables" = get_vis(insighted(),
